@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const config = require('config');
+const keys = require('../config/keys');
 
 const authMiddleware = (req, res, next) => {
     const token = req.header('x-auth-token');
@@ -10,7 +10,7 @@ const authMiddleware = (req, res, next) => {
     }
     //validating token
     try{
-        const decoded = jwt.verify(token, config.get('jwtSecret'))
+        const decoded = jwt.verify(token, keys.jwtSecret)
         req.user = decoded.user;
     }catch(err){
         return res.status(500).json({errors: [{ msg: "invalid token. Authorization denied" }]})
